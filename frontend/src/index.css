@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+body {
+  background: url("/bg-tech.jpg");   /* your hero background */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  margin: 0;
+  padding: 0;
+}
+
+.neon-red::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 12px;
+  padding: 3px;
+  background: radial-gradient(circle, rgba(255,0,90,0.9) 0%, rgba(255,0,90,0.3) 60%, transparent 100%);
+  animation: neonSpin 2s linear infinite;
+  z-index: -1;
+}
+
+.neon-red {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes neonSpin {
+  0% {
+    transform: rotate(0deg);
+    filter: drop-shadow(0 0 6px rgba(255,0,90,0.9));
+  }
+  100% {
+    transform: rotate(360deg);
+    filter: drop-shadow(0 0 10px rgba(255,0,90,1));
+  }
+}
+
+
