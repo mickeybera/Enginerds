@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
-
+import  { Toaster } from 'react-hot-toast';
+import Signup from "./Pages/Signup";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Events from "./components/Events";
@@ -31,7 +32,10 @@ const App = () => {
 
   return (
     <>
+    <Toaster />
       <Routes>
+        {/* auth route */}
+        <Route path="/signup" element={<Signup />} />
         {/* Frontend user-facing website */}
         <Route
           path="/"
@@ -104,6 +108,8 @@ const App = () => {
          */}
          {/* <Route path="/admin/events/:eventId/participants" element={<ViewParticipants />} /> */}
         <Route path="/admin/events/participants/:eventId" element={<ViewParticipants />} />
+        <Route path="/admin/events/participants/:eventId" element={<ViewParticipants />} />
+
 
 
       </Routes>

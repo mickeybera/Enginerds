@@ -45,44 +45,62 @@ const ManageEvents = () => {
   };
 
   return (
-    <div className="p-10 bg-gray-900 min-h-screen text-white">
-      <h2 className="text-3xl font-bold mb-6">Manage Events</h2>
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 p-10 text-white relative overflow-hidden">
 
-      <div className="space-y-4">
+      {/* Neon Background Orbs */}
+      <div className="absolute top-10 left-10 w-60 h-60 bg-blue-500 rounded-full blur-3xl opacity-20 animate-pulse"></div>
+      <div className="absolute bottom-10 right-10 w-72 h-72 bg-purple-600 rounded-full blur-3xl opacity-20 animate-pulse"></div>
+
+      <h2 className="text-4xl font-extrabold mb-10 tracking-wider drop-shadow-xl">
+        Manage Events
+      </h2>
+
+      <div className="space-y-6">
         {events.map((evt) => (
           <div
             key={evt._id}
-            className="bg-gray-800 p-5 rounded-xl shadow-md border border-gray-700"
+            className="backdrop-blur-xl bg-white/10 border border-white/20 p-6 rounded-2xl shadow-xl hover:scale-[1.02] transition-all duration-300 hover:border-purple-500/40"
           >
-            <h3 className="text-xl font-bold">{evt.title}</h3>
+            <div className="flex justify-between items-center">
+              <h3 className="text-2xl font-bold text-white tracking-wide">
+                {evt.name}
+              </h3>
+              <span className="px-4 py-1 bg-purple-600/30 border border-purple-500/40 rounded-full text-sm">
+                {evt.date}
+              </span>
+            </div>
 
-            <p className="mt-1 text-gray-300">Date: {evt.date}</p>
-            <p className="mt-2 text-gray-400">{evt.description}</p>
+            <p className="mt-3 text-gray-300">{evt.description}</p>
 
-            <div className="flex gap-4 mt-4">
-              {/* UPDATE BUTTON */}
+            <div className="flex gap-4 mt-6">
+
+              {/* Update */}
               <button
                 onClick={() => handleUpdate(evt._id)}
-                className="bg-yellow-500 hover:bg-yellow-600 px-4 py-2 rounded font-medium"
+                className="px-5 py-2 rounded-xl font-semibold bg-yellow-500/20 border border-yellow-400/40 text-yellow-300
+                hover:bg-yellow-500/30 hover:scale-105 transition-all duration-300"
               >
                 Update
               </button>
 
-              {/* DELETE BUTTON */}
+              {/* Delete */}
               <button
-                className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded font-medium"
                 onClick={() => handleDelete(evt._id)}
+                className="px-5 py-2 rounded-xl font-semibold bg-red-500/20 border border-red-400/40 text-red-300
+                hover:bg-red-500/30 hover:scale-105 transition-all duration-300"
               >
                 Delete
               </button>
+
+              {/* View Participants */}
               <button
-                onClick={() =>
-                  navigate(`/admin/events/participants/${evt._id}`)
-                }
-                className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded font-medium"
+                onClick={() => navigate(`/admin/events/participants/${evt._id}`)}
+                className="px-5 py-2 rounded-xl font-semibold bg-green-500/20 border border-green-400/40 text-green-300
+                hover:bg-green-500/30 hover:scale-105 transition-all duration-300"
               >
                 View Participants
               </button>
+
             </div>
           </div>
         ))}

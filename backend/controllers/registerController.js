@@ -1,81 +1,190 @@
 import Registration from "../models/Registration.js";
 import mongoose from "mongoose";
+
+// -----------------------------
+// REGISTER FOR EVENT
+// -----------------------------
 // export const registerForEvent = async (req, res) => {
 //   try {
-//     const { eventId } = req.body;
+//     const { eventId, name, email, phone } = req.body;
 
-//     if (!eventId) return res.status(400).json({ error: "EventId is required" });
+//     // Validate required fields
+//     if (!eventId || !name || !email || !phone) {
+//       return res.status(400).json({ error: "All fields are required" });
+//     }
 
+//     // Validate eventId
+//     if (!mongoose.Types.ObjectId.isValid(eventId)) {
+//       return res.status(400).json({ error: "Invalid eventId" });
+//     }
+
+//     // Optional payment screenshot
 //     const screenshot = req.file ? req.file.path : null;
 
+//     // Temporary userId (until you create real users)
+//     const dummyUserId = new mongoose.Types.ObjectId();
+
+//     // Save registration
 //     const registration = await Registration.create({
-//       userId: "dummyUser123", // temporary for testing
-//       eventId,
+//       userId: dummyUserId,
+//       eventId: new mongoose.Types.ObjectId(eventId),
+//       name,
+//       email,
+//       phone,
 //       paymentScreenshot: screenshot,
 //     });
 
-//     res.json({ success: true, registration });
+//     res.status(201).json({ success: true, registration });
+
 //   } catch (err) {
-//     console.error(err);
+//     console.error("Register Error:", err);
 //     res.status(500).json({ error: err.message });
 //   }
 // };
-export const registerForEvent = async (req, res) => {
+
+
+export const createRegistration = async (req, res) => {
   try {
-    const { eventId, name, email, phone } = req.body;
+    const { name, email, phone, eventId, transactionId,paymentId,amountPaid } = req.body;
 
-    // Validate required fields
-    if (!eventId || !name || !email || !phone) {
-      return res.status(400).json({ error: "All fields are required" });
+    if (!name || !email || !phone || !eventId || !transactionId || !paymentId || !amountPaid) {
+      return res.status(400).json({ error: "All required fields must be filled." });
     }
 
-    // Check if eventId is valid ObjectId
-    if (!mongoose.Types.ObjectId.isValid(eventId)) {
-      return res.status(400).json({ error: "Invalid eventId" });
-    }
-
-    // Optional payment screenshot
-    const screenshot = req.file ? req.file.path : null;
-
-    // Use a dummy userId for testing
-    const dummyUserId = new mongoose.Types.ObjectId();
-
-    // Create registration
-    const registration = await Registration.create({
-      userId: dummyUserId,
-      eventId: new mongoose.Types.ObjectId(eventId), // ✅ fixed
+    const newReg = new Registration({
       name,
       email,
       phone,
-      paymentScreenshot: screenshot,
+      eventId,
+      transactionId,
+      paymentId,
+      amountPaid,
     });
 
-    res.status(201).json({ success: true, registration });
+    await newReg.save();
+
+    res.json({
+      message: "Registration successful!",
+      registration: newReg,
+    });
   } catch (err) {
-    console.error("Register Error:", err);
-    res.status(500).json({ error: err.message });
+    console.error("Registration error:", err);
+    res.status(500).json({ error: "Server error" });
   }
 };
 
-export const getParticipants = async (req, res) => {
-  const { eventId } = req.params;
-
-  const list = await Registration.find({ eventId }).populate("userId", "name email");
-  res.json(list);
-};
-
-
-// ✅ GET PARTICIPANTS BY EVENT ID
+// -----------------------------
+// GET PARTICIPANTS BY EVENT ID
+// -----------------------------
 // export const getParticipants = async (req, res) => {
 //   try {
 //     const { eventId } = req.params;
 
-//     const participants = await Registration.find({ eventId });
+//     // Validate event ID
+//     if (!mongoose.Types.ObjectId.isValid(eventId)) {
+//       return res.status(400).json({ error: "Invalid eventId" });
+//     }
 
-//     res.json({ participants });
+//     // Fetch participants
+//     const participants = await Registration.find({
+//       eventId: new mongoose.Types.ObjectId(eventId),
+//     }).select("name email phone paymentScreenshot");
+
+//     res.json({ success: true, participants });
 
 //   } catch (error) {
+//     console.error("Get Participants Error:", error);
 //     res.status(500).json({ message: error.message });
 //   }
 // };
+
+//final get participantes
+export const getParticipants = async (req, res) => {
+  try {
+    const { eventId } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(eventId)) {
+      return res.status(400).json({ error: "Invalid eventId" });
+    }
+
+    const participants = await Registration.find({ eventId })
+      .select("name email phone paymentScreenshot paymentId transactionId amountPaid");
+
+    res.json({ success: true, participants });
+  } catch (error) {
+    console.error("Get Participants Error:", error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+
+
+// -----------------------------
+// GET PARTICIPANTS BY EVENT ID
+// -----------------------------
+// export const getParticipants = async (req, res) => {
+//   try {
+//     const { eventId } = req.params;
+
+//     // Validate eventId format
+//     if (!eventId) {
+//       return res.status(400).json({ error: "EventId is required" });
+//     }
+
+//     // Try to convert to ObjectId if possible
+//     let eventIdQuery;
+//     if (mongoose.Types.ObjectId.isValid(eventId)) {
+//       eventIdQuery = mongoose.Types.ObjectId(eventId);
+//     } else {
+//       eventIdQuery = eventId; // fallback to string
+//     }
+
+//     // Fetch participants
+//     const participants = await Registration.find({
+//       eventId: eventIdQuery,
+//     }).select("name email phone paymentScreenshot");
+
+//     res.json({ success: true, participants });
+
+//   } catch (error) {
+//     console.error("Get Participants Error:", error);
+//     res.status(500).json({ message: error.message });
+//   }
+// };
+
+
+
+
+
+
+// ---------------------------------------------------
+// GET PARTICIPANTS BY EVENT ID
+// ---------------------------------------------------
+// export const getParticipants = async (req, res) => {
+//   try {
+//     const { eventId } = req.params;
+
+//     // Validate event ID
+//     if (!mongoose.Types.ObjectId.isValid(eventId)) {
+//       return res.status(400).json({ error: "Invalid eventId" });
+//     }
+
+//     // Fetch participants
+//     const participants = await Registration.find({
+//       eventId: new mongoose.Types.ObjectId(eventId),
+//     }).select("name email phone paymentScreenshot");
+
+//     res.json({
+//       success: true,
+//       count: participants.length,
+//       participants,
+//     });
+//   } catch (error) {
+//     console.error("Get Participants Error:", error);
+//     res.status(500).json({ message: error.message });
+//   }
+// };
+
+
 

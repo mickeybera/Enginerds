@@ -44,10 +44,10 @@ const Navbar = () => {
           {/* <button className="px-4 py-2 rounded-lg bg-white/10 text-white border border-white/20 hover:bg-white/20 transition">
             Login
           </button> */}
-  <button className="relative px-4 py-2 rounded-lg bg-white/10 text-white border border-white/20 hover:bg-white/20 transition overflow-hidden neon-red">
-  Login
+  <Link to = "/signup"><button className="relative px-4 py-2 rounded-lg bg-white/10 text-white border border-white/20 hover:bg-white/20 transition overflow-hidden neon-red">
+  Signup
 </button>
-
+</Link>
 
           <Link to="/admin/login">
           <button className="px-4 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg hover:scale-105 transition">

@@ -9,7 +9,9 @@ const EventRegistrationModal = ({ isOpen, onClose, preSelectedEvent }) => {
     email: "",
     phone: "",
     eventId: preSelectedEvent || "",
-    paymentScreenshot: null,
+    transactionId: "",
+    paymentId: "",
+    amountPaid: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -17,7 +19,7 @@ const EventRegistrationModal = ({ isOpen, onClose, preSelectedEvent }) => {
   const [selectedEventImage, setSelectedEventImage] = useState(null);
   const [selectedQRCode, setSelectedQRCode] = useState(null);
 
-  // Fetch Events
+  // Fetch events
   useEffect(() => {
     const fetchEvents = async () => {
       try {
@@ -28,7 +30,7 @@ const EventRegistrationModal = ({ isOpen, onClose, preSelectedEvent }) => {
           const evt = res.data.find((e) => e._id === preSelectedEvent);
           if (evt) {
             setSelectedEventImage(evt.eventImage);
-            setSelectedQRCode(evt.qrImage); // FIXED
+            setSelectedQRCode(evt.qrImage);
           }
         }
       } catch (err) {
@@ -38,30 +40,22 @@ const EventRegistrationModal = ({ isOpen, onClose, preSelectedEvent }) => {
     fetchEvents();
   }, [preSelectedEvent]);
 
-  // Update event image + QR on select
+  // Update event image + QR
   useEffect(() => {
-    if (formData.eventId) {
-      const evt = events.find((e) => e._id === formData.eventId);
-      if (evt) {
-        setSelectedEventImage(evt.eventImage);
-        setSelectedQRCode(evt.qrImage); // FIXED
-      } else {
-        setSelectedEventImage(null);
-        setSelectedQRCode(null);
-      }
+    const evt = events.find((e) => e._id === formData.eventId);
+    if (evt) {
+      setSelectedEventImage(evt.eventImage);
+      setSelectedQRCode(evt.qrImage);
     }
   }, [formData.eventId, events]);
 
+  // Input handler
   const handleChange = (e) => {
-    const { name, value, files } = e.target;
-
-    if (name === "paymentScreenshot") {
-      setFormData((prev) => ({ ...prev, paymentScreenshot: files[0] }));
-    } else {
-      setFormData((prev) => ({ ...prev, [name]: value }));
-    }
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Submit handler
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -74,28 +68,18 @@ const EventRegistrationModal = ({ isOpen, onClose, preSelectedEvent }) => {
     }
 
     try {
-      const data = new FormData();
-      data.append("name", formData.name);
-      data.append("email", formData.email);
-      data.append("phone", formData.phone);
-      data.append("eventId", formData.eventId);
-
-      if (formData.paymentScreenshot) {
-        data.append("paymentScreenshot", formData.paymentScreenshot);
-      }
-
-      await axios.post("http://localhost:5000/api/register/create", data, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      await axios.post("http://localhost:5000/api/register/create", formData);
 
       setMessage("Registration Successful!");
 
       setFormData({
         name: "",
-        email: "",
-        phone: "",
-        eventId: preSelectedEvent || "",
-        paymentScreenshot: null,
+  email: "",
+  phone: "",
+  eventId: preSelectedEvent || "",
+  transactionId: "",
+  paymentId: "",   // <-- FIXED
+  amountPaid: "",
       });
     } catch (err) {
       console.error(err);
@@ -109,17 +93,18 @@ const EventRegistrationModal = ({ isOpen, onClose, preSelectedEvent }) => {
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 z-50 flex justify-center items-center bg-black/50 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex justify-center items-center bg-black/40 backdrop-blur-sm"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
           <motion.div
-            className="bg-white/10 w-full max-w-md rounded-3xl p-6 sm:p-8 shadow-2xl glass-card relative"
-            initial={{ scale: 0.8, opacity: 0 }}
+            className="bg-white/10 w-full max-w-md rounded-2xl p-5 shadow-2xl glass-card relative max-h-[90vh] overflow-y-auto scrollbar-thin scrollbar-thumb-white/20"
+            initial={{ scale: 0.85, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.8, opacity: 0 }}
+            exit={{ scale: 0.85, opacity: 0 }}
           >
+            {/* Close Button */}
             <button
               onClick={onClose}
               className="absolute top-3 right-3 text-white text-2xl font-bold"
@@ -127,13 +112,14 @@ const EventRegistrationModal = ({ isOpen, onClose, preSelectedEvent }) => {
               &times;
             </button>
 
-            <h2 className="text-3xl font-bold text-white mb-6 text-center">
+            <h2 className="text-2xl font-bold text-white mb-4 text-center">
               Event Registration
             </h2>
 
+            {/* Status Message */}
             {message && (
               <p
-                className={`text-center mb-4 ${
+                className={`text-center mb-3 ${
                   message.includes("Successful") ? "text-green-400" : "text-red-400"
                 }`}
               >
@@ -141,33 +127,36 @@ const EventRegistrationModal = ({ isOpen, onClose, preSelectedEvent }) => {
               </p>
             )}
 
+            {/* Event Image */}
             {selectedEventImage && (
               <img
                 src={`http://localhost:5000/${selectedEventImage}`}
                 alt="Event"
-                className="w-full h-40 object-cover rounded-xl mb-4"
+                className="w-full h-32 object-cover rounded-xl mb-3"
               />
             )}
 
+            {/* QR Image */}
             {selectedQRCode && (
-              <div className="flex justify-center mb-4">
+              <div className="flex justify-center mb-3">
                 <img
                   src={`http://localhost:5000/${selectedQRCode}`}
-                  alt="Payment QR"
-                  className="w-32 h-32 object-contain rounded-xl shadow-lg"
+                  alt="QR Code"
+                  className="w-28 h-28 object-contain rounded-xl shadow-lg"
                 />
               </div>
             )}
 
-            <form className="space-y-4" onSubmit={handleSubmit}>
+            {/* Form */}
+            <form className="space-y-3" onSubmit={handleSubmit}>
               <input
                 type="text"
                 name="name"
                 placeholder="Full Name"
                 value={formData.name}
                 onChange={handleChange}
-                className="w-full p-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:outline-none"
                 required
+                className="w-full p-2.5 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-300"
               />
 
               <input
@@ -176,8 +165,8 @@ const EventRegistrationModal = ({ isOpen, onClose, preSelectedEvent }) => {
                 placeholder="Email Address"
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full p-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:outline-none"
                 required
+                className="w-full p-2.5 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-300"
               />
 
               <input
@@ -186,39 +175,59 @@ const EventRegistrationModal = ({ isOpen, onClose, preSelectedEvent }) => {
                 placeholder="Phone Number"
                 value={formData.phone}
                 onChange={handleChange}
-                className="w-full p-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:outline-none"
                 required
+                className="w-full p-2.5 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-300"
               />
 
               <select
                 name="eventId"
                 value={formData.eventId}
                 onChange={handleChange}
-                className="w-full p-3 rounded-xl bg-white/10 border border-white/20 text-black focus:outline-none"
                 required
+                className="w-full p-2.5 rounded-xl bg-white/10 border border-white/20 text-black"
               >
-                <option value="" disabled>
-                  Select Event
-                </option>
-
+                <option value="">Select Event</option>
                 {events.map((event) => (
                   <option key={event._id} value={event._id}>
-                    {event.title} {/* FIXED */}
+                    {event.title}
                   </option>
                 ))}
               </select>
 
               <input
-                type="file"
-                name="paymentScreenshot"
+                type="text"
+                name="transactionId"
+                placeholder="Transaction ID"
+                value={formData.transactionId}
                 onChange={handleChange}
-                className="w-full text-white"
+                required
+                className="w-full p-2.5 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-300"
+              />
+
+              <input
+                type="text"
+                name="paymentId"
+                placeholder="UPI Reference ID"
+                value={formData.paymentId}
+                onChange={handleChange}
+                required
+                className="w-full p-2.5 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-300"
+              />
+
+              <input
+                type="number"
+                name="amountPaid"
+                placeholder="Amount Paid"
+                value={formData.amountPaid}
+                onChange={handleChange}
+                required
+                className="w-full p-2.5 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-300"
               />
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold shadow-lg hover:scale-105 transition disabled:opacity-50"
+                className="w-full py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold shadow-lg hover:scale-105 transition disabled:opacity-50"
               >
                 {loading ? "Registering..." : "Register"}
               </button>
@@ -231,3 +240,4 @@ const EventRegistrationModal = ({ isOpen, onClose, preSelectedEvent }) => {
 };
 
 export default EventRegistrationModal;
+
