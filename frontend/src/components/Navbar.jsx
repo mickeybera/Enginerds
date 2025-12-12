@@ -8,79 +8,89 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 20) setScrolled(true);
-      else setScrolled(false);
+      setScrolled(window.scrollY > 20);
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300
-        ${
-          scrolled
-            ? "backdrop-blur-xl bg-white/10 border-b border-white/10 shadow-lg"
-            : "bg-gradient-to-r from-[#0f0c29]/80 via-[#302b63]/80 to-[#24243e]/80"
-        }
-      `}
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+        scrolled
+          ? "backdrop-blur-xl bg-white/10 border-b border-white/10 shadow-[0_0_15px_rgba(0,0,0,0.4)]"
+          : "bg-gradient-to-r from-[#0f0c29]/70 via-[#302b63]/70 to-[#24243e]/70"
+      }`}
     >
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
 
-        {/* Logo */}
-        <h1 className="text-2xl font-bold text-white select-none">TechFeast</h1>
+        {/* Tech Logo */}
+        <h1 className="text-3xl font-extrabold tracking-wider text-transparent bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text drop-shadow-md cursor-pointer select-none">
+          Tech<span className="text-white font-light">Feast</span>
+        </h1>
 
         {/* Desktop Links */}
-        <div className="hidden md:flex gap-8 text-white font-medium">
-          <a href="#hero" className="hover:text-gray-300 transition">Home</a>
-          <a href="#events" className="hover:text-gray-300 transition">Events</a>
-          <a href="#about" className="hover:text-gray-300 transition">About</a>
-          <a href="#contact" className="hover:text-gray-300 transition">Contact</a>
+        <div className="hidden md:flex gap-10 text-white font-medium">
+          {["Home", "Events", "About", "Contact"].map((item) => (
+            <a
+              key={item}
+              href={`#${item.toLowerCase()}`}
+              className="relative group text-lg"
+            >
+              {item}
+              <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-purple-400 group-hover:w-full transition-all duration-300"></span>
+            </a>
+          ))}
         </div>
 
-        {/* Desktop Buttons */}
-        <div className="hidden md:flex gap-3">
-          {/* <button className="px-4 py-2 rounded-lg bg-white/10 text-white border border-white/20 hover:bg-white/20 transition">
-            Login
-          </button> */}
-  <Link to = "/signup"><button className="relative px-4 py-2 rounded-lg bg-white/10 text-white border border-white/20 hover:bg-white/20 transition overflow-hidden neon-red">
-  Signup
-</button>
-</Link>
-
+        {/* Desktop Admin Button */}
+        <div className="hidden md:flex">
           <Link to="/admin/login">
-          <button className="px-4 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg hover:scale-105 transition">
-            Admin
-          </button>
+            <button className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-[0_0_12px_rgba(138,43,226,0.8)] hover:shadow-[0_0_18px_rgba(138,43,226,1)] hover:scale-105 transition-all duration-300">
+              Admin
+            </button>
           </Link>
         </div>
 
         {/* Mobile Menu Icon */}
-        <div className="md:hidden text-white text-3xl cursor-pointer" onClick={() => setOpen(!open)}>
+        <div
+          className="md:hidden text-white text-3xl cursor-pointer"
+          onClick={() => setOpen(!open)}
+        >
           {open ? <FiX /> : <FiMenu />}
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      {open && (
-        <div className="md:hidden bg-white/10 backdrop-blur-xl border-t border-white/10 px-6 py-6 space-y-6 text-white text-lg">
-          <a onClick={() => setOpen(false)} href="#hero" className="block hover:text-gray-300">Home</a>
-          <a onClick={() => setOpen(false)} href="#events" className="block hover:text-gray-300">Events</a>
-          <a onClick={() => setOpen(false)} href="#about" className="block hover:text-gray-300">About</a>
-          <a onClick={() => setOpen(false)} href="#contact" className="block hover:text-gray-300">Contact</a>
+      {/* Mobile Menu Panel */}
+      <div
+        className={`md:hidden transition-all duration-300 overflow-hidden ${
+          open ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <div className="bg-white/10 backdrop-blur-xl border-t border-white/10 px-6 py-6 space-y-6 text-white text-lg shadow-inner">
 
-          {/* Mobile Buttons */}
-          <div className="flex flex-col gap-3 pt-4">
-            <button className="w-full px-4 py-3 rounded-lg bg-white/10 text-white border border-white/20 hover:bg-white/20 transition">
-              Login
-            </button>
-            <button className="w-full px-4 py-3 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg hover:scale-[1.02] transition">
+          {["Home", "Events", "About", "Contact"].map((item) => (
+            <a
+              key={item}
+              href={`#${item.toLowerCase()}`}
+              onClick={() => setOpen(false)}
+              className="block hover:text-purple-300 transition-all"
+            >
+              {item}
+            </a>
+          ))}
+
+          {/* Mobile Admin Button */}
+          <Link to="/admin/login">
+            <button
+              onClick={() => setOpen(false)}
+              className="w-full px-4 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-[0_0_15px_rgba(138,43,226,0.8)] hover:shadow-[0_0_20px_rgba(138,43,226,1)] hover:scale-[1.02] transition-all duration-300"
+            >
               Admin
             </button>
-          </div>
+          </Link>
         </div>
-      )}
+      </div>
     </nav>
   );
 };

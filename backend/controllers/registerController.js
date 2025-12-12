@@ -45,9 +45,9 @@ import mongoose from "mongoose";
 
 export const createRegistration = async (req, res) => {
   try {
-    const { name, email, phone, eventId, transactionId,paymentId,amountPaid } = req.body;
+    const { name, email,eventId, phone,transactionId,paymentId,amountPaid } = req.body;
 
-    if (!name || !email || !phone || !eventId || !transactionId || !paymentId || !amountPaid) {
+    if (!name || !email || !phone || !transactionId || !paymentId || !amountPaid) {
       return res.status(400).json({ error: "All required fields must be filled." });
     }
 

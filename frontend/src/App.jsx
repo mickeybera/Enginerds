@@ -32,7 +32,7 @@ const App = () => {
 
   return (
     <>
-    <Toaster />
+     <Toaster position="top-center" reverseOrder={false} />
       <Routes>
         {/* auth route */}
         <Route path="/signup" element={<Signup />} />

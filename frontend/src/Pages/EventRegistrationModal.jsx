@@ -40,7 +40,7 @@ const EventRegistrationModal = ({ isOpen, onClose, preSelectedEvent }) => {
     fetchEvents();
   }, [preSelectedEvent]);
 
-  // Update event image + QR
+  // Update selected event media
   useEffect(() => {
     const evt = events.find((e) => e._id === formData.eventId);
     if (evt) {
@@ -74,12 +74,12 @@ const EventRegistrationModal = ({ isOpen, onClose, preSelectedEvent }) => {
 
       setFormData({
         name: "",
-  email: "",
-  phone: "",
-  eventId: preSelectedEvent || "",
-  transactionId: "",
-  paymentId: "",   // <-- FIXED
-  amountPaid: "",
+        email: "",
+        phone: "",
+        eventId: preSelectedEvent || "",
+        transactionId: "",
+        paymentId: "",
+        amountPaid: "",
       });
     } catch (err) {
       console.error(err);
@@ -99,7 +99,7 @@ const EventRegistrationModal = ({ isOpen, onClose, preSelectedEvent }) => {
           exit={{ opacity: 0 }}
         >
           <motion.div
-            className="bg-white/10 w-full max-w-md rounded-2xl p-5 shadow-2xl glass-card relative max-h-[90vh] overflow-y-auto scrollbar-thin scrollbar-thumb-white/20"
+            className="bg-white/10 w-full max-w-md rounded-2xl p-5 shadow-2xl relative max-h-[90vh] overflow-y-auto scrollbar-thin scrollbar-thumb-white/20"
             initial={{ scale: 0.85, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.85, opacity: 0 }}
@@ -149,6 +149,7 @@ const EventRegistrationModal = ({ isOpen, onClose, preSelectedEvent }) => {
 
             {/* Form */}
             <form className="space-y-3" onSubmit={handleSubmit}>
+              {/* NAME */}
               <input
                 type="text"
                 name="name"
@@ -159,6 +160,7 @@ const EventRegistrationModal = ({ isOpen, onClose, preSelectedEvent }) => {
                 className="w-full p-2.5 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-300"
               />
 
+              {/* EMAIL */}
               <input
                 type="email"
                 name="email"
@@ -169,6 +171,7 @@ const EventRegistrationModal = ({ isOpen, onClose, preSelectedEvent }) => {
                 className="w-full p-2.5 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-300"
               />
 
+              {/* PHONE */}
               <input
                 type="tel"
                 name="phone"
@@ -179,21 +182,30 @@ const EventRegistrationModal = ({ isOpen, onClose, preSelectedEvent }) => {
                 className="w-full p-2.5 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-300"
               />
 
-              <select
+              {/* EVENT SELECT */}
+              {/* <select
                 name="eventId"
                 value={formData.eventId}
                 onChange={handleChange}
                 required
-                className="w-full p-2.5 rounded-xl bg-white/10 border border-white/20 text-black"
+                className="w-full p-2.5 rounded-xl bg-white/10 border border-white/20 text-white"
               >
-                <option value="">Select Event</option>
+                <option value="" className="text-black">
+                  Select Event
+                </option>
+
                 {events.map((event) => (
-                  <option key={event._id} value={event._id}>
+                  <option
+                    key={event._id}
+                    value={event._id}
+                    className="text-black"
+                  >
                     {event.title}
                   </option>
                 ))}
-              </select>
+              </select> */}
 
+              {/* TRANSACTION ID */}
               <input
                 type="text"
                 name="transactionId"
@@ -204,6 +216,7 @@ const EventRegistrationModal = ({ isOpen, onClose, preSelectedEvent }) => {
                 className="w-full p-2.5 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-300"
               />
 
+              {/* PAYMENT ID */}
               <input
                 type="text"
                 name="paymentId"
@@ -214,6 +227,7 @@ const EventRegistrationModal = ({ isOpen, onClose, preSelectedEvent }) => {
                 className="w-full p-2.5 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-300"
               />
 
+              {/* AMOUNT */}
               <input
                 type="number"
                 name="amountPaid"
@@ -224,6 +238,7 @@ const EventRegistrationModal = ({ isOpen, onClose, preSelectedEvent }) => {
                 className="w-full p-2.5 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-300"
               />
 
+              {/* SUBMIT */}
               <button
                 type="submit"
                 disabled={loading}
@@ -240,4 +255,3 @@ const EventRegistrationModal = ({ isOpen, onClose, preSelectedEvent }) => {
 };
 
 export default EventRegistrationModal;
-

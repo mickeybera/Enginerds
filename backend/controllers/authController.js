@@ -28,3 +28,17 @@ export const login = async (req, res) => {
   const token = jwt.sign({ id: user._id }, JWT_SECRET);
   res.json({ token });
 };
+
+//logout
+
+export const logout = async (req, res) => {
+  try {
+    // If you want, you can later store blacklisted tokens in DB.
+
+    return res.json({ message: "Logout successful" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+

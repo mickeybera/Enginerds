@@ -27,8 +27,8 @@ const Signup = () => {
 
       const res = await axios.post("http://localhost:5000/api/auth/signup", form);
 
-      alert("Signup Successful! Please login.");
-      // toast.success('Signup Successfully!')
+      // alert("Signup Successful! Please login.");
+      toast.success('Signup Successfully!')
       navigate("/");
     } catch (err) {
       console.log(err);

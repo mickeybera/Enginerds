@@ -36,4 +36,52 @@ body {
   }
 }
 
+/* //navbarcss */
+/* Neon glow effect */
+.neon-glow {
+  text-shadow: 0 0 8px #00ffff, 0 0 12px #00ffff, 0 0 20px #00ffff;
+}
+
+/* Glitch text effect */
+.glitch {
+  position: relative;
+}
+.glitch::before,
+.glitch::after {
+  content: attr(class);
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: cyan;
+  background: transparent;
+  overflow: hidden;
+  clip: rect(0, 900px, 0, 0);
+  animation: glitch 2s infinite;
+  opacity: 0.6;
+}
+@keyframes glitch {
+  0% { clip: rect(10px, 9999px, 20px, 0); transform: translate(-2px, -2px); }
+  20% { clip: rect(30px, 9999px, 60px, 0); transform: translate(2px, 2px); }
+  40% { clip: rect(10px, 9999px, 40px, 0); transform: translate(-1px, 1px); }
+  60% { clip: rect(50px, 9999px, 80px, 0); transform: translate(1px, -1px); }
+  80% { clip: rect(20px, 9999px, 50px, 0); transform: translate(-1px, -2px); }
+  100% { clip: rect(40px, 9999px, 70px, 0); transform: translate(1px, 2px); }
+}
+
+/* Futuristic hologram link */
+.hologram {
+  position: relative;
+  transition: all 0.3s ease;
+}
+.hologram:hover {
+  color: #8befff;
+  text-shadow: 0 0 10px cyan;
+}
+
+
+.glow {
+  text-shadow: 0 0 8px #a855f7, 0 0 16px #7c3aed;
+}
+
+
 
