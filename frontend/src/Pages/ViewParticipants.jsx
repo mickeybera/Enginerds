@@ -18,7 +18,7 @@ const ViewParticipants = () => {
     const fetchParticipants = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/register/participants/${eventId}`,
+          `https://enginerds-1gc2.onrender.com/api/register/participants/${eventId}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("adminToken")}`,

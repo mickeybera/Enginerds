@@ -5,7 +5,7 @@ const Participants = () => {
   const [data, setData] = useState([]);
 
   const load = async () => {
-    const res = await axios.get("http://localhost:5000/api/participants");
+    const res = await axios.get("https://enginerds-1gc2.onrender.com/api/participants");
     setData(res.data);
   };
 
@@ -27,7 +27,7 @@ const Participants = () => {
 
             {p.screenshot && (
               <img
-                src={`http://localhost:5000/${p.screenshot}`}
+                src={`https://enginerds-1gc2.onrender.com/${p.screenshot}`}
                 className="w-32 mt-3 rounded"
               />
             )}

@@ -25,7 +25,7 @@ const Signup = () => {
     try {
       setLoading(true);
 
-      const res = await axios.post("http://localhost:5000/api/auth/signup", form);
+      const res = await axios.post("https://enginerds-1gc2.onrender.com/api/auth/signup", form);
 
       // alert("Signup Successful! Please login.");
       toast.success('Signup Successfully!')

@@ -11,7 +11,7 @@ const Events = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/events");
+        const res = await axios.get("https://enginerds-1gc2.onrender.com/api/events");
         setEvents(res.data);
       } catch (err) {
         console.error(err);
@@ -43,7 +43,7 @@ const Events = () => {
             className="bg-white/10 rounded-3xl shadow-2xl overflow-hidden glass-card hover:scale-105 transform transition"
           >
             <img
-              src={`http://localhost:5000/${event.eventImage}`}
+              src={`https://enginerds-1gc2.onrender.com/${event.eventImage}`}
               alt={event.name}
               className="w-full h-48 object-cover"
             />

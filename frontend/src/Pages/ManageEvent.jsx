@@ -8,7 +8,7 @@ const ManageEvents = () => {
 
   const loadEvents = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/events");
+      const res = await axios.get("https://enginerds-1gc2.onrender.com/api/events");
       setEvents(res.data);
     } catch (error) {
       console.log("Error loading events", error);
@@ -26,7 +26,7 @@ const ManageEvents = () => {
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(`http://localhost:5000/api/events/${id}`, {
+      await axios.delete(`https://enginerds-1gc2.onrender.com/api/events/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
         },

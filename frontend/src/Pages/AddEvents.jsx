@@ -37,7 +37,7 @@ const AddEvent = () => {
 
     try {
       setLoading(true);
-      await axios.post("http://localhost:5000/api/events/create", data, {
+      await axios.post("https://enginerds-1gc2.onrender.com/api/events/create", data, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",

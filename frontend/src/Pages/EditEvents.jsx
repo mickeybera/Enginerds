@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/events";
+const API_URL = "https://enginerds-1gc2.onrender.com/api/events";
 
 const EditEvent = () => {
   const { id } = useParams();
@@ -121,7 +121,7 @@ await axios.put(`${API_URL}/${id}`, formData, {
           <div>
             <label className="block font-semibold mb-2">Current Image</label>
             <img
-              src={`http://localhost:5000/${eventData.eventImage}`}
+              src={`https://enginerds-1gc2.onrender.com/${eventData.eventImage}`}
               alt="event"
               className="w-32 h-32 rounded-lg object-cover border"
             />

@@ -23,7 +23,7 @@ const EventRegistrationModal = ({ isOpen, onClose, preSelectedEvent }) => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/events");
+        const res = await axios.get("https://enginerds-1gc2.onrender.com/api/events");
         setEvents(res.data);
 
         if (preSelectedEvent) {
@@ -68,7 +68,7 @@ const EventRegistrationModal = ({ isOpen, onClose, preSelectedEvent }) => {
     }
 
     try {
-      await axios.post("http://localhost:5000/api/register/create", formData);
+      await axios.post("https://enginerds-1gc2.onrender.com/api/register/create", formData);
 
       setMessage("Registration Successful!");
 
@@ -130,7 +130,7 @@ const EventRegistrationModal = ({ isOpen, onClose, preSelectedEvent }) => {
             {/* Event Image */}
             {selectedEventImage && (
               <img
-                src={`http://localhost:5000/${selectedEventImage}`}
+                src={`https://enginerds-1gc2.onrender.com/${selectedEventImage}`}
                 alt="Event"
                 className="w-full h-32 object-cover rounded-xl mb-3"
               />
@@ -140,7 +140,7 @@ const EventRegistrationModal = ({ isOpen, onClose, preSelectedEvent }) => {
             {selectedQRCode && (
               <div className="flex justify-center mb-3">
                 <img
-                  src={`http://localhost:5000/${selectedQRCode}`}
+                  src={`https://enginerds-1gc2.onrender.com/${selectedQRCode}`}
                   alt="QR Code"
                   className="w-28 h-28 object-contain rounded-xl shadow-lg"
                 />

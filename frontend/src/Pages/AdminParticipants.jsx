@@ -9,7 +9,7 @@ const AdminParticipants = ({ eventId }) => {
     const fetchParticipants = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/register/participants/${eventId}`,
+          `https://enginerds-1gc2.onrender.com/api/register/participants/${eventId}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
@@ -55,7 +55,7 @@ const AdminParticipants = ({ eventId }) => {
                 <td className="p-2">
                   {p.paymentScreenshot ? (
                     <a
-                      href={`http://localhost:5000/${p.paymentScreenshot}`}
+                      href={`https://enginerds-1gc2.onrender.com/${p.paymentScreenshot}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-purple-400 underline"
