@@ -156,35 +156,3 @@ export const getParticipants = async (req, res) => {
 
 
 
-
-
-// ---------------------------------------------------
-// GET PARTICIPANTS BY EVENT ID
-// ---------------------------------------------------
-// export const getParticipants = async (req, res) => {
-//   try {
-//     const { eventId } = req.params;
-
-//     // Validate event ID
-//     if (!mongoose.Types.ObjectId.isValid(eventId)) {
-//       return res.status(400).json({ error: "Invalid eventId" });
-//     }
-
-//     // Fetch participants
-//     const participants = await Registration.find({
-//       eventId: new mongoose.Types.ObjectId(eventId),
-//     }).select("name email phone paymentScreenshot");
-
-//     res.json({
-//       success: true,
-//       count: participants.length,
-//       participants,
-//     });
-//   } catch (error) {
-//     console.error("Get Participants Error:", error);
-//     res.status(500).json({ message: error.message });
-//   }
-// };
-
-
-

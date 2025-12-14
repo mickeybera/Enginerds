@@ -4,63 +4,81 @@ import { FiPlusCircle, FiSettings, FiUsers } from "react-icons/fi";
 
 const AdminDashboard = () => {
   return (
-    <div className="p-10 min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white animate-fadeIn">
+    <section className="relative min-h-screen bg-black text-white overflow-hidden">
 
-      <h1 className="text-4xl font-bold mb-10 text-center bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-blue-400 drop-shadow-lg">
-        Admin Dashboard
-      </h1>
+      {/* Cyber Grid */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(0,255,255,0.08)_1px,transparent_1px)] bg-[length:28px_28px] opacity-10" />
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-5xl mx-auto">
+      {/* Scan Line */}
+      <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-purple-500 to-transparent animate-pulse" />
 
-        {/* ADD EVENT */}
-        <Link
-          to="/admin/events/add"
-          className="group p-8 rounded-2xl backdrop-blur-xl bg-white/10 border border-white/20 
-          shadow-xl hover:shadow-purple-500/30 transition-all hover:-translate-y-1"
-        >
-          <div className="flex flex-col items-center gap-4">
-            <FiPlusCircle className="text-5xl text-purple-400 group-hover:text-purple-300 transition" />
-            <h2 className="text-2xl font-semibold">Add Event</h2>
-            <p className="text-gray-300 text-center text-sm">
-              Create new technical, cultural, gaming or coding event.
-            </p>
-          </div>
-        </Link>
+      <div className="relative z-10 p-10">
 
-        {/* MANAGE EVENTS */}
-        <Link
-          to="/admin/manage-events"
-          className="group p-8 rounded-2xl backdrop-blur-xl bg-white/10 border border-white/20 
-          shadow-xl hover:shadow-green-500/30 transition-all hover:-translate-y-1"
-        >
-          <div className="flex flex-col items-center gap-4">
-            <FiSettings className="text-5xl text-green-400 group-hover:text-green-300 transition" />
-            <h2 className="text-2xl font-semibold">Manage Events</h2>
-            <p className="text-gray-300 text-center text-sm">
-              Edit, update, delete or organize events.
-            </p>
-          </div>
-        </Link>
+        {/* Title */}
+        <h1 className="text-4xl md:text-5xl font-extrabold mb-12 text-center tracking-wider">
+          <span className="text-purple-400">ADMIN</span>{" "}
+          <span className="text-blue-400">CONTROL</span>{" "}
+          <span className="text-white">PANEL</span>
+        </h1>
 
-        {/* VIEW PARTICIPANTS */}
-        <Link
-          to="/admin/participants"
-          className="group p-8 rounded-2xl backdrop-blur-xl bg-white/10 border border-white/20 
-          shadow-xl hover:shadow-blue-500/30 transition-all hover:-translate-y-1"
-        >
-          <div className="flex flex-col items-center gap-4">
-            <FiUsers className="text-5xl text-blue-400 group-hover:text-blue-300 transition" />
-            <h2 className="text-2xl font-semibold">View Participants</h2>
-            <p className="text-gray-300 text-center text-sm">
-              Check all registered participants & download reports.
-            </p>
-          </div>
-        </Link>
+        {/* Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 max-w-6xl mx-auto">
 
+          {/* ADD EVENT */}
+          <Link
+            to="/admin/events/add"
+            className="group relative p-8 rounded-3xl bg-white/5 backdrop-blur-xl border border-purple-500/30 
+            shadow-[0_0_25px_rgba(168,85,247,0.2)] hover:shadow-[0_0_40px_rgba(168,85,247,0.5)]
+            transition-all duration-300 hover:-translate-y-1"
+          >
+            <div className="absolute inset-0 rounded-3xl border border-purple-500/20 group-hover:border-purple-400/60 transition" />
+            <div className="flex flex-col items-center gap-4 relative z-10">
+              <FiPlusCircle className="text-6xl text-purple-400 group-hover:scale-110 transition" />
+              <h2 className="text-2xl font-semibold">Add Event</h2>
+              <p className="text-gray-400 text-center text-sm">
+                Create new technical, cultural, gaming or coding events.
+              </p>
+            </div>
+          </Link>
+
+          {/* MANAGE EVENTS */}
+          <Link
+            to="/admin/manage-events"
+            className="group relative p-8 rounded-3xl bg-white/5 backdrop-blur-xl border border-green-500/30 
+            shadow-[0_0_25px_rgba(34,197,94,0.2)] hover:shadow-[0_0_40px_rgba(34,197,94,0.5)]
+            transition-all duration-300 hover:-translate-y-1"
+          >
+            <div className="absolute inset-0 rounded-3xl border border-green-500/20 group-hover:border-green-400/60 transition" />
+            <div className="flex flex-col items-center gap-4 relative z-10">
+              <FiSettings className="text-6xl text-green-400 group-hover:rotate-12 transition" />
+              <h2 className="text-2xl font-semibold">Manage Events</h2>
+              <p className="text-gray-400 text-center text-sm">
+                Edit, update, delete or organize events.
+              </p>
+            </div>
+          </Link>
+
+          {/* VIEW PARTICIPANTS */}
+          <Link
+            to="/admin/participants"
+            className="group relative p-8 rounded-3xl bg-white/5 backdrop-blur-xl border border-blue-500/30 
+            shadow-[0_0_25px_rgba(59,130,246,0.2)] hover:shadow-[0_0_40px_rgba(59,130,246,0.5)]
+            transition-all duration-300 hover:-translate-y-1"
+          >
+            <div className="absolute inset-0 rounded-3xl border border-blue-500/20 group-hover:border-blue-400/60 transition" />
+            <div className="flex flex-col items-center gap-4 relative z-10">
+              <FiUsers className="text-6xl text-blue-400 group-hover:scale-110 transition" />
+              <h2 className="text-2xl font-semibold">View Participants</h2>
+              <p className="text-gray-400 text-center text-sm">
+                Check all registered participants & download reports.
+              </p>
+            </div>
+          </Link>
+
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 
 export default AdminDashboard;
-

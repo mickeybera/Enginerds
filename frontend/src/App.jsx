@@ -18,6 +18,7 @@ import AddEvent from "./Pages/AddEvents";
 import ManageEvents from "./Pages/ManageEvent";
 import ProtectedRoute from "./components/ProtactRoute";
 import ViewParticipants from "./Pages/ViewParticipants";
+import PrivacyPolicy from "./components/PrivecyPolicy";
 // import ViewParticipants from "./Pages/ViewParticipants";
 
 
@@ -46,6 +47,7 @@ const App = () => {
               <Events onRegister={handleRegisterClick} />
               <About />
               <Contact />
+              {/* <PrivacyPolicy/> */}
               <Footer />
               <EventRegistrationModal
                 isOpen={showModal}
@@ -55,6 +57,7 @@ const App = () => {
             </>
           }
         />
+        
 
         {/* Admin Login */}
         <Route path="/admin/login" element={<AdminLogin />} />

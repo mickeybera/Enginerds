@@ -4,7 +4,7 @@ import axios from "axios";
 import * as XLSX from "xlsx";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-
+import toast from "react-hot-toast"
 const ViewParticipants = () => {
   const { eventId } = useParams();
   const [participants, setParticipants] = useState([]);
@@ -66,7 +66,7 @@ const ViewParticipants = () => {
   // -------------------------
   const downloadExcel = () => {
     if (filtered.length === 0) {
-      alert("No participants to download!");
+      toast.error("No participants to download!");
       return;
     }
 
@@ -137,14 +137,14 @@ const ViewParticipants = () => {
         <div className="flex gap-3">
           <button
             onClick={downloadExcel}
-            className="px-5 py-2 rounded-xl bg-green-400 text-black font-semibold hover:bg-green-500 shadow-lg hover:shadow-green-500/40 transition-all"
+            className="hover:cursor-pointer px-5 py-2 rounded-xl bg-green-400 text-black font-semibold hover:bg-green-500 shadow-lg hover:shadow-green-500/40 transition-all"
           >
             Download Excel
           </button>
 
           <button
             onClick={downloadPDF}
-            className="px-5 py-2 rounded-xl bg-yellow-400 text-black font-semibold hover:bg-yellow-500 shadow-lg hover:shadow-yellow-500/40 transition-all"
+            className="hover:cursor-pointer px-5 py-2 rounded-xl bg-yellow-400 text-black font-semibold hover:bg-yellow-500 shadow-lg hover:shadow-yellow-500/40 transition-all"
           >
             Download PDF
           </button>

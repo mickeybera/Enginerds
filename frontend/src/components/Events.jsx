@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import EventRegistrationModal from "../Pages/EventRegistrationModal";
+import MatrixRain from "../Pages/MatrixRain";
+
 
 const Events = () => {
   const [events, setEvents] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedEventId, setSelectedEventId] = useState(null);
 
-  // Fetch events from backend
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const res = await axios.get("https://enginerds-1gc2.onrender.com/api/events");
+        const res = await axios.get(
+          "https://enginerds-1gc2.onrender.com/api/events"
+        );
         setEvents(res.data);
       } catch (err) {
         console.error(err);
@@ -20,55 +23,103 @@ const Events = () => {
     fetchEvents();
   }, []);
 
-  // Open modal for selected event
   const openModal = (eventId) => {
     setSelectedEventId(eventId);
     setModalOpen(true);
   };
 
-  // Close modal
   const closeModal = () => {
     setModalOpen(false);
     setSelectedEventId(null);
   };
 
   return (
-    <section className="w-full py-24 px-6 bg-gradient-to-b from-[#0f0c29] via-[#302b63] to-[#24243e]">
-      <h2 className="text-4xl text-white font-bold mb-12 text-center">Events</h2>
+    <section
+      id="events"
+      className="relative w-full py-28 px-6 bg-black overflow-hidden"
+    >
+      <MatrixRain/>
+      {/* Background Grid (same as Hero) */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(0,255,255,0.06)_1px,transparent_1px)] bg-[length:32px_32px] opacity-20"></div>
 
-      {events.length === 0 ? (
-        <p className="text-gray-300 text-center text-lg">
-          No events have been added yet. Please check back later.
+      {/* Glow Orbs */}
+      <div className="absolute -top-40 left-20 w-96 h-96 bg-cyan-500/20 blur-3xl rounded-full"></div>
+      <div className="absolute bottom-0 right-20 w-96 h-96 bg-purple-600/20 blur-3xl rounded-full"></div>
+
+      {/* Section Heading */}
+      <div className="relative z-10 text-center mb-16">
+        <h2 className="text-4xl md:text-5xl font-extrabold tracking-wider text-white">
+          CYBER
+          <span className="bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+            EVENTS
+          </span>
+        </h2>
+        <p className="mt-4 text-gray-400 max-w-xl mx-auto">
+          Compete in next-gen challenges designed for hackers, gamers,
+          innovators, and tech warriors.
         </p>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {events.map((event) => (
+      </div>
+
+      {/* Events Grid */}
+      <div className="relative z-10 max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+        {events.length === 0 ? (
+          <p className="col-span-full text-center text-gray-400 text-lg">
+            No events available yet.
+          </p>
+        ) : (
+          events.map((event) => (
             <div
               key={event._id}
-              className="bg-white/10 rounded-3xl shadow-2xl overflow-hidden glass-card hover:scale-105 transform transition"
+              className="group relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl hover:scale-[1.05] transition-all duration-300"
             >
+              {/* Neon Border */}
+              <div className="absolute inset-0 rounded-3xl border border-cyan-400/20 group-hover:border-purple-500/40 transition"></div>
+
+              {/* Image */}
               <img
                 src={`https://enginerds-1gc2.onrender.com/${event.eventImage}`}
                 alt={event.name}
-                className="w-full h-48 object-cover"
+                className="w-full h-48 object-cover opacity-80 group-hover:opacity-100 transition"
               />
-              <div className="p-6">
-                <h3 className="text-2xl text-white font-bold mb-2">{event.name}</h3>
-                <p className="text-gray-300 mb-4">{event.description}</p>
-                <p className="text-gray-300 mb-4">{event.price}</p>
+
+              {/* Content */}
+              <div className="p-6 relative z-10">
+                <h3 className="text-2xl font-bold text-white mb-2">
+                  {event.name}
+                </h3>
+
+                <p className="text-gray-400 text-sm mb-4">
+                  {event.description}
+                </p>
+
+                {/* <div className="flex items-center justify-between mb-4">
+                  <span className="text-cyan-400 font-mono text-sm">
+                    ENTRY FEE
+                  </span>
+                  <span className="text-purple-400 font-bold">
+                    ₹ {event.price}
+                  </span>
+                </div> */}
+
                 <button
                   onClick={() => openModal(event._id)}
-                  className="w-full py-2 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold shadow-lg hover:scale-105 transition"
+                  className="hover:cursor-pointer w-full py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-semibold shadow-lg hover:scale-105 transition"
                 >
-                  Register
+                  REGISTER
                 </button>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
 
-      {/* Event Registration Modal */}
+              {/* HUD Corners */}
+              <span className="absolute top-3 left-3 w-3 h-3 border-t border-l border-cyan-400"></span>
+              <span className="absolute top-3 right-3 w-3 h-3 border-t border-r border-purple-400"></span>
+              <span className="absolute bottom-3 left-3 w-3 h-3 border-b border-l border-purple-400"></span>
+              <span className="absolute bottom-3 right-3 w-3 h-3 border-b border-r border-cyan-400"></span>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* Modal */}
       {modalOpen && (
         <EventRegistrationModal
           isOpen={modalOpen}

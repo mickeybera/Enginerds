@@ -4,6 +4,15 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const EventRegistrationModal = ({ isOpen, onClose, preSelectedEvent }) => {
   const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [message, setMessage] = useState("");
+
+  const [selectedEventImage, setSelectedEventImage] = useState(null);
+  const [selectedQRCode, setSelectedQRCode] = useState(null);
+
+  const successSound = new Audio("/success.mp3");
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -14,76 +23,56 @@ const EventRegistrationModal = ({ isOpen, onClose, preSelectedEvent }) => {
     amountPaid: "",
   });
 
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
-  const [selectedEventImage, setSelectedEventImage] = useState(null);
-  const [selectedQRCode, setSelectedQRCode] = useState(null);
-
   // Fetch events
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const res = await axios.get("https://enginerds-1gc2.onrender.com/api/events");
+        const res = await axios.get(
+          "https://enginerds-1gc2.onrender.com/api/events"
+        );
         setEvents(res.data);
 
         if (preSelectedEvent) {
-          const evt = res.data.find((e) => e._id === preSelectedEvent);
+          const evt = res.data.find(e => e._id === preSelectedEvent);
           if (evt) {
             setSelectedEventImage(evt.eventImage);
             setSelectedQRCode(evt.qrImage);
           }
         }
       } catch (err) {
-        console.error("Error fetching events:", err);
+        console.error(err);
       }
     };
     fetchEvents();
   }, [preSelectedEvent]);
 
-  // Update selected event media
-  useEffect(() => {
-    const evt = events.find((e) => e._id === formData.eventId);
-    if (evt) {
-      setSelectedEventImage(evt.eventImage);
-      setSelectedQRCode(evt.qrImage);
-    }
-  }, [formData.eventId, events]);
-
-  // Input handler
-  const handleChange = (e) => {
+  // Handle input
+  const handleChange = e => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  // Submit handler
-  const handleSubmit = async (e) => {
+  // Submit
+  const handleSubmit = async e => {
     e.preventDefault();
     setLoading(true);
     setMessage("");
 
-    if (!formData.eventId) {
-      setMessage("Please select an event");
-      setLoading(false);
-      return;
-    }
-
     try {
-      await axios.post("https://enginerds-1gc2.onrender.com/api/register/create", formData);
+      await axios.post(
+        "https://enginerds-1gc2.onrender.com/api/register/create",
+        formData
+      );
 
-      setMessage("Registration Successful!");
+      successSound.play();
+      setSuccess(true);
 
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        eventId: preSelectedEvent || "",
-        transactionId: "",
-        paymentId: "",
-        amountPaid: "",
-      });
+      setTimeout(() => {
+        setSuccess(false);
+        onClose();
+      }, 2500);
     } catch (err) {
-      console.error(err);
-      setMessage(err.response?.data?.error || "Registration Failed!");
+      setMessage("Registration failed!");
     } finally {
       setLoading(false);
     }
@@ -93,160 +82,141 @@ const EventRegistrationModal = ({ isOpen, onClose, preSelectedEvent }) => {
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 z-50 flex justify-center items-center bg-black/40 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
           <motion.div
-            className="bg-white/10 w-full max-w-md rounded-2xl p-5 shadow-2xl relative max-h-[90vh] overflow-y-auto scrollbar-thin scrollbar-thumb-white/20"
             initial={{ scale: 0.85, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.85, opacity: 0 }}
+            className="relative w-full max-w-3xl bg-black/80 border border-purple-500/30 rounded-2xl shadow-[0_0_40px_rgba(138,43,226,0.5)] p-6"
           >
-            {/* Close Button */}
+            {/* Close */}
             <button
               onClick={onClose}
-              className="absolute top-3 right-3 text-white text-2xl font-bold"
+              className="absolute top-3 right-4 text-white text-2xl"
             >
-              &times;
+              ×
             </button>
 
-            <h2 className="text-2xl font-bold text-white mb-4 text-center">
-              Event Registration
-            </h2>
-
-            {/* Status Message */}
-            {message && (
-              <p
-                className={`text-center mb-3 ${
-                  message.includes("Successful") ? "text-green-400" : "text-red-400"
-                }`}
+            {/* SUCCESS SCREEN */}
+            {success ? (
+              <motion.div
+                initial={{ scale: 0.6, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                className="h-64 flex flex-col items-center justify-center text-green-400"
               >
-                {message}
-              </p>
-            )}
+                <div className="text-6xl mb-3">✔</div>
+                <h2 className="text-2xl font-bold">
+                  Registration Successful
+                </h2>
+                <p className="text-green-300 mt-2">
+                  See you at TechFeast 🚀
+                </p>
+              </motion.div>
+            ) : (
+              <>
+                <h2 className="text-2xl font-bold text-white mb-5 text-center">
+                  Event Registration
+                </h2>
 
-            {/* Event Image */}
-            {selectedEventImage && (
-              <img
-                src={`https://enginerds-1gc2.onrender.com/${selectedEventImage}`}
-                alt="Event"
-                className="w-full h-32 object-cover rounded-xl mb-3"
-              />
-            )}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* LEFT : Images */}
+                  <div className="space-y-4">
+                    {selectedEventImage && (
+                      <img
+                        src={`https://enginerds-1gc2.onrender.com/${selectedEventImage}`}
+                        className="w-full h-40 object-cover rounded-xl"
+                        alt="Event"
+                      />
+                    )}
 
-            {/* QR Image */}
-            {selectedQRCode && (
-              <div className="flex justify-center mb-3">
-                <img
-                  src={`https://enginerds-1gc2.onrender.com/${selectedQRCode}`}
-                  alt="QR Code"
-                  className="w-28 h-28 object-contain rounded-xl shadow-lg"
-                />
-              </div>
-            )}
+                    {selectedQRCode && (
+                      <img
+                        src={`https://enginerds-1gc2.onrender.com/${selectedQRCode}`}
+                        className="w-40 mx-auto bg-white p-2 rounded-xl"
+                        alt="QR"
+                      />
+                    )}
+                  </div>
 
-            {/* Form */}
-            <form className="space-y-3" onSubmit={handleSubmit}>
-              {/* NAME */}
-              <input
-                type="text"
-                name="name"
-                placeholder="Full Name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-                className="w-full p-2.5 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-300"
-              />
-
-              {/* EMAIL */}
-              <input
-                type="email"
-                name="email"
-                placeholder="Email Address"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                className="w-full p-2.5 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-300"
-              />
-
-              {/* PHONE */}
-              <input
-                type="tel"
-                name="phone"
-                placeholder="Phone Number"
-                value={formData.phone}
-                onChange={handleChange}
-                required
-                className="w-full p-2.5 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-300"
-              />
-
-              {/* EVENT SELECT */}
-              {/* <select
-                name="eventId"
-                value={formData.eventId}
-                onChange={handleChange}
-                required
-                className="w-full p-2.5 rounded-xl bg-white/10 border border-white/20 text-white"
-              >
-                <option value="" className="text-black">
-                  Select Event
-                </option>
-
-                {events.map((event) => (
-                  <option
-                    key={event._id}
-                    value={event._id}
-                    className="text-black"
+                  {/* RIGHT : FORM */}
+                  <form
+                    onSubmit={handleSubmit}
+                    className="space-y-3 text-white"
                   >
-                    {event.title}
-                  </option>
-                ))}
-              </select> */}
+                    <input
+                      type="text"
+                      name="name"
+                      placeholder="Full Name"
+                      required
+                      onChange={handleChange}
+                      className="w-full p-2.5 rounded-xl bg-white/10 border border-white/20"
+                    />
 
-              {/* TRANSACTION ID */}
-              <input
-                type="text"
-                name="transactionId"
-                placeholder="Transaction ID"
-                value={formData.transactionId}
-                onChange={handleChange}
-                required
-                className="w-full p-2.5 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-300"
-              />
+                    <input
+                      type="email"
+                      name="email"
+                      placeholder="Email"
+                      required
+                      onChange={handleChange}
+                      className="w-full p-2.5 rounded-xl bg-white/10 border border-white/20"
+                    />
 
-              {/* PAYMENT ID */}
-              <input
-                type="text"
-                name="paymentId"
-                placeholder="UPI Reference ID"
-                value={formData.paymentId}
-                onChange={handleChange}
-                required
-                className="w-full p-2.5 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-300"
-              />
+                    <input
+                      type="tel"
+                      name="phone"
+                      placeholder="Phone"
+                      required
+                      onChange={handleChange}
+                      className="w-full p-2.5 rounded-xl bg-white/10 border border-white/20"
+                    />
 
-              {/* AMOUNT */}
-              <input
-                type="number"
-                name="amountPaid"
-                placeholder="Amount Paid"
-                value={formData.amountPaid}
-                onChange={handleChange}
-                required
-                className="w-full p-2.5 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-300"
-              />
+                    <input
+                      type="text"
+                      name="transactionId"
+                      placeholder="Transaction ID"
+                      required
+                      onChange={handleChange}
+                      className="w-full p-2.5 rounded-xl bg-white/10 border border-white/20"
+                    />
 
-              {/* SUBMIT */}
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold shadow-lg hover:scale-105 transition disabled:opacity-50"
-              >
-                {loading ? "Registering..." : "Register"}
-              </button>
-            </form>
+                    <input
+                      type="text"
+                      name="paymentId"
+                      placeholder="UPI Reference ID"
+                      required
+                      onChange={handleChange}
+                      className="w-full p-2.5 rounded-xl bg-white/10 border border-white/20"
+                    />
+
+                    <input
+                      type="number"
+                      name="amountPaid"
+                      placeholder="Amount Paid"
+                      required
+                      onChange={handleChange}
+                      className="w-full p-2.5 rounded-xl bg-white/10 border border-white/20"
+                    />
+
+                    <button
+                      disabled={loading}
+                      className="w-full py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:scale-105 transition font-semibold"
+                    >
+                      {loading ? "Registering..." : "Register"}
+                    </button>
+
+                    {message && (
+                      <p className="text-red-400 text-sm text-center">
+                        {message}
+                      </p>
+                    )}
+                  </form>
+                </div>
+              </>
+            )}
           </motion.div>
         </motion.div>
       )}

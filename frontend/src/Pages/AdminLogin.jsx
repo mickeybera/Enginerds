@@ -47,7 +47,7 @@ const AdminLogin = () => {
           className="w-full p-3 border rounded mb-3"
         />
 
-        <button className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold">
+        <button className="hover:cursor-pointer w-full bg-blue-600 text-white py-3 rounded-lg font-semibold">
           Login
         </button>
       </form>
