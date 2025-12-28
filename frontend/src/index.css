@@ -88,5 +88,39 @@ body {
   @apply w-full p-2.5 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500;
 }
 
+/* //floatingcode */
+
+@keyframes float {
+  0% { transform: translateY(0); opacity: 0.3; }
+  50% { opacity: 0.6; }
+  100% { transform: translateY(-80px); opacity: 0; }
+}
+
+.animate-float {
+  animation: float 12s linear infinite;
+}
+
+/* neon pink */
+@keyframes neonFlicker {
+  0%, 100% {
+    text-shadow:
+      0 0 5px #ec4899,
+      0 0 10px #ec4899,
+      0 0 20px #ec4899,
+      0 0 40px #db2777;
+    opacity: 1;
+  }
+  50% {
+    text-shadow:
+      0 0 2px #ec4899,
+      0 0 6px #db2777;
+    opacity: 0.85;
+  }
+}
+
+.animate-neon {
+  animation: neonFlicker 2.2s infinite alternate;
+}
+
 
 

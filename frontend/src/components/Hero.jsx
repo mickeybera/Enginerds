@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import MatrixRain from "../Pages/MatrixRain";
-
+import logo from "./../../public/logo.png";
 const texts = [
   "Code. Compete. Conquer.",
   "Hack the Future.",
@@ -41,7 +41,6 @@ const Hero = () => {
 
   return (
     <section className="relative min-h-screen bg-black overflow-hidden flex items-center justify-center">
-
       {/* MATRIX RAIN */}
       <MatrixRain />
 
@@ -65,19 +64,29 @@ const Hero = () => {
 
       {/* CONTENT */}
       <div className="relative z-10 max-w-4xl px-6 text-center">
+        <div className="flex justify-center mb-6">
+  <img
+    src={logo}
+    alt="Enginerds Logo"
+    className="w-40 h-40 cursor-pointer select-none
+               object-contain rounded-xl
+               border border-cyan-400/40
+               shadow-[0_0_20px_rgba(0,255,255,0.5)]
+               hover:shadow-[0_0_30px_rgba(0,255,255,0.8)]
+               transition"
+  />
+</div>
 
-        <h1 className="text-5xl md:text-7xl font-extrabold text-white tracking-wider">
-          TECH
-          <span className="bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
-            FEAST
-          </span>
-          2025
-        </h1>
 
         {/* Typing Text */}
-        <p className="mt-6 text-xl md:text-2xl font-mono text-cyan-400 h-8">
+
+        <p
+          className="mt-6 text-xl md:text-2xl font-mono text-pink-400 h-8 
+             drop-shadow-[0_0_10px_rgba(236,72,153,0.9)] 
+             animate-neon"
+        >
           {displayText}
-          <span className="animate-pulse">|</span>
+          <span className="animate-pulse text-pink-300">|</span>
         </p>
 
         <p className="mt-6 text-gray-400 max-w-2xl mx-auto">
@@ -94,9 +103,7 @@ const Hero = () => {
             Explore Events
           </a>
 
-          <a
-            className="px-8 py-3 rounded-xl border border-cyan-400/40 text-cyan-300 hover:bg-cyan-400/20 hover:text-white hover:cursor-pointer font-semibold shadow-xl hover:scale-105 transition"
-          >
+          <a className="px-8 py-3 rounded-xl border border-cyan-400/40 text-cyan-300 hover:bg-cyan-400/10 hover:text-white hover:cursor-pointer font-semibold shadow-xl hover:scale-105 transition">
             Register Now
           </a>
         </div>
@@ -113,7 +120,6 @@ const Hero = () => {
         className="pointer-events-none fixed w-40 h-40 bg-cyan-400/20 blur-3xl rounded-full transition-all duration-75"
         style={{ left: mouse.x - 80, top: mouse.y - 80 }}
       ></div>
-
     </section>
   );
 };

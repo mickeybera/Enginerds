@@ -5,10 +5,10 @@ import { FaInstagram } from "react-icons/fa";
 import { FiGithub } from "react-icons/fi";
 const Footer = () => {
   return (
-    <footer className="relative w-full pt-20 pb-10 px-6 bg-gradient-to-b from-[#0f0c29] via-[#302b63] to-[#24243e] text-white overflow-hidden">
+    <footer className="relative w-full pt-20 pb-10 px-6 bg-linear-to-b from-[#0f0c29] via-[#302b63] to-[#24243e] text-white overflow-hidden">
       <MatrixRain/>
       {/* Cyber Grid */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(0,255,255,0.05)_1px,transparent_1px)] bg-[length:48px_48px] opacity-15"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(0,255,255,0.05)_1px,transparent_1px)] bg-size-[48px_48px] opacity-15"></div>
 
       {/* Glow Accents */}
       <div className="absolute left-1/2 -translate-x-1/2 top-0 w-[500px] h-[120px] bg-cyan-500/20 blur-3xl"></div>
@@ -19,7 +19,7 @@ const Footer = () => {
         <div className="text-center md:text-left">
           <h2 className="text-3xl font-extrabold tracking-wide">
             Tech
-            <span className="bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
               Feast
             </span>
           </h2>
@@ -44,21 +44,21 @@ const Footer = () => {
         {/* Socials */}
         <div className="flex gap-6">
           <ul className="flex gap-6 font-bold text-2xl">
-            <li className="hover:cursor-pointer hover:text-blue-600"><FaFacebook /></li>
-            <li className="hover:cursor-pointer hover:text-pink-600"><FaInstagram /></li>
+           <a href="https://www.facebook.com/enginerds2k19?mibextid=wwXIfr"><li className="hover:cursor-pointer hover:text-blue-600"><FaFacebook /></li></a>
+            <a href="" target="_blank" rel="noopener noreferrer"></a><li className="hover:cursor-pointer hover:text-pink-600"><FaInstagram /></li>
             <li className="hover:cursor-pointer hover:text-gray-500"><FiGithub /></li>
           </ul>
         </div>
       </div>
 
       {/* Divider */}
-      <div className="relative z-10 max-w-6xl mx-auto my-10 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+      <div className="relative z-10 max-w-6xl mx-auto my-10 h-px bg-linear-to-r from-transparent via-white/20 to-transparent"></div>
 
       {/* Credits */}
       <div className="relative z-10 text-center text-gray-300 text-sm space-y-1">
         <p>
           Designed & Developed by{" "}
-          <span className="text-white font-semibold">Arpan Bera</span>
+          <span className="text-white font-semibold"><a href="http://arpandev.in">Arpan Bera</a></span>
         </p>
         <p>Batch of 2026 • Department of Computer Science & Engineering</p>
       </div>

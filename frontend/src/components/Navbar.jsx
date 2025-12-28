@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 import { Link } from "react-router-dom";
-
+import logo from "../../public/logo.png"
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -24,13 +24,18 @@ const Navbar = () => {
       <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent"></div>
 
       <div className="relative max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-
         {/* Logo */}
         <h1 className="text-3xl font-extrabold tracking-widest cursor-pointer select-none">
-          <span className="text-white">ENGIN</span>
-          <span className="bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
-            ERDS
-          </span>
+          <img
+            src={logo}
+            alt="Enginerds Logo"
+            className="w-20 h-20 cursor-pointer select-none
+             object-cover rounded-xl
+             border border-cyan-400/40
+             shadow-[0_0_20px_rgba(0,255,255,0.5)]
+             hover:shadow-[0_0_30px_rgba(0,255,255,0.8)]
+             transition"
+          />
         </h1>
 
         {/* Desktop Links */}
@@ -44,7 +49,7 @@ const Navbar = () => {
               <span className="relative z-10">{item}</span>
 
               {/* Neon underline */}
-              <span className="absolute left-0 -bottom-2 w-0 h-[2px] bg-gradient-to-r from-cyan-400 to-purple-500 group-hover:w-full transition-all duration-300"></span>
+              <span className="absolute left-0 -bottom-2 w-0 h-[2px] bg-cyan-400 group-hover:w-full transition-all duration-300"></span>
 
               {/* Glow */}
               <span className="absolute -bottom-3 left-0 w-0 h-[6px] blur-md bg-cyan-400/40 group-hover:w-full transition-all duration-300"></span>
@@ -79,7 +84,6 @@ const Navbar = () => {
         }`}
       >
         <div className="bg-black/70 backdrop-blur-2xl border-t border-cyan-400/20 px-6 py-8 space-y-6 text-white text-lg">
-
           {["Home", "Events", "About", "Contact"].map((item) => (
             <a
               key={item}

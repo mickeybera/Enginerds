@@ -4,7 +4,8 @@ import axios from "axios";
 import * as XLSX from "xlsx";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import toast from "react-hot-toast"
+import toast from "react-hot-toast";
+
 const ViewParticipants = () => {
   const { eventId } = useParams();
   const [participants, setParticipants] = useState([]);
@@ -29,6 +30,7 @@ const ViewParticipants = () => {
         setParticipants(res.data.participants || []);
       } catch (error) {
         console.log(error);
+        toast.error("Failed to load participants");
       } finally {
         setLoading(false);
       }
@@ -41,8 +43,8 @@ const ViewParticipants = () => {
   // SEARCH FILTER
   // -------------------------
   const filtered = useMemo(() => {
+    const term = search.toLowerCase();
     return participants.filter((p) => {
-      const term = search.toLowerCase();
       return (
         p.name?.toLowerCase().includes(term) ||
         p.email?.toLowerCase().includes(term) ||
@@ -90,7 +92,7 @@ const ViewParticipants = () => {
   // -------------------------
   const downloadPDF = () => {
     if (filtered.length === 0) {
-      alert("No participants to download!");
+      toast.error("No participants to download!");
       return;
     }
 
@@ -102,8 +104,8 @@ const ViewParticipants = () => {
       "Name",
       "Email",
       "Phone",
-      "PaymentID",
-      "TransactionID",
+      "Payment ID",
+      "Transaction ID",
       "Amount",
     ];
 
@@ -125,26 +127,26 @@ const ViewParticipants = () => {
     doc.save(`event_${eventId}_participants.pdf`);
   };
 
-  if (loading) return <p className="p-4 text-lg">Loading...</p>;
+  if (loading) return <p className="p-6 text-lg text-white">Loading...</p>;
 
   return (
-    <div className="bg-black p-5 animate-fadeIn text-white">
+    <div className="bg-black min-h-screen p-6 text-white animate-fadeIn">
 
       {/* HEADER */}
-      <div className="mb-6 flex flex-col md:flex-row justify-between items-center gap-3">
+      <div className="mb-6 flex flex-col md:flex-row justify-between items-center gap-4">
         <h1 className="text-2xl font-bold">Participants</h1>
 
         <div className="flex gap-3">
           <button
             onClick={downloadExcel}
-            className="hover:cursor-pointer px-5 py-2 rounded-xl bg-green-400 text-black font-semibold hover:bg-green-500 shadow-lg hover:shadow-green-500/40 transition-all"
+            className="px-5 py-2 rounded-xl border border-green-600 text-green-500 font-semibold hover:bg-green-400/10 transition"
           >
             Download Excel
           </button>
 
           <button
             onClick={downloadPDF}
-            className="hover:cursor-pointer px-5 py-2 rounded-xl bg-yellow-400 text-black font-semibold hover:bg-yellow-500 shadow-lg hover:shadow-yellow-500/40 transition-all"
+            className="px-5 py-2 rounded-xl bg-yellow-400 text-black font-semibold hover:bg-yellow-500 transition"
           >
             Download PDF
           </button>
@@ -162,45 +164,56 @@ const ViewParticipants = () => {
       />
 
       {/* TOTAL COLLECTION */}
-      <div className="p-4 mb-6 rounded-xl bg-white/10 border border-white/20 backdrop-blur-md shadow-lg">
+      <div className="p-4 mb-6 rounded-xl bg-white/10 border border-white/20 backdrop-blur-md">
         <h2 className="text-lg font-semibold">Total Collection</h2>
-        <p className="text-2xl text-green-400 font-bold mt-1">₹{totalCollection}</p>
+        <p className="text-2xl text-green-400 font-bold mt-1">
+          ₹{totalCollection}
+        </p>
+        <p className="text-sm text-gray-300 mt-1">
+          Showing {filtered.length} participants
+        </p>
       </div>
 
       {/* PARTICIPANTS TABLE */}
       {filtered.length === 0 ? (
         <p>No participants found.</p>
       ) : (
-        <table className="w-full rounded-xl overflow-hidden backdrop-blur-lg bg-white/5 border border-white/10 shadow-xl">
-          <thead className="bg-white/10 text-purple-300">
-            <tr>
-              <th className="p-3">Name</th>
-              <th className="p-3">Email</th>
-              <th className="p-3">Phone</th>
-              <th className="p-3">Payment ID</th>
-              <th className="p-3">Transaction ID</th>
-              <th className="p-3">Amount</th>
-            </tr>
-          </thead>
+        <div className="max-h-[65vh] overflow-y-auto rounded-xl backdrop-blur-lg bg-white/5 border border-white/10 shadow-xl">
+          <table className="w-full border-collapse">
 
-          <tbody>
-            {filtered.map((p, i) => (
-              <tr
-                key={p._id}
-                className={`transition-all ${
-                  i % 2 === 0 ? "bg-white/5" : "bg-white/10"
-                } hover:bg-white/20`}
-              >
-                <td className="p-3">{p.name}</td>
-                <td className="p-3">{p.email}</td>
-                <td className="p-3">{p.phone}</td>
-                <td className="p-3">{p.paymentId}</td>
-                <td className="p-3">{p.transactionId}</td>
-                <td className="p-3 text-green-400 font-bold">₹{p.amountPaid}</td>
+            {/* STICKY HEADER */}
+            <thead className="sticky top-0 z-10 bg-black/80 backdrop-blur-lg text-purple-300">
+              <tr>
+                <th className="p-3 text-left">Name</th>
+                <th className="p-3 text-left">Email</th>
+                <th className="p-3 text-left">Phone</th>
+                <th className="p-3 text-left">Payment ID</th>
+                <th className="p-3 text-left">Transaction ID</th>
+                <th className="p-3 text-left">Amount</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody>
+              {filtered.map((p, i) => (
+                <tr
+                  key={p._id}
+                  className={`transition ${
+                    i % 2 === 0 ? "bg-white/5" : "bg-white/10"
+                  } hover:bg-white/20`}
+                >
+                  <td className="p-3">{p.name}</td>
+                  <td className="p-3">{p.email}</td>
+                  <td className="p-3">{p.phone}</td>
+                  <td className="p-3">{p.paymentId || "—"}</td>
+                  <td className="p-3">{p.transactionId || "—"}</td>
+                  <td className="p-3 text-green-400 font-bold">
+                    ₹{p.amountPaid || 0}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );
