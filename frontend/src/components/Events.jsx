@@ -3,7 +3,6 @@ import axios from "axios";
 import EventRegistrationModal from "../Pages/EventRegistrationModal";
 import MatrixRain from "../Pages/MatrixRain";
 
-
 const Events = () => {
   const [events, setEvents] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
@@ -38,8 +37,9 @@ const Events = () => {
       id="events"
       className="relative w-full py-28 px-6 bg-black overflow-hidden"
     >
-      <MatrixRain/>
-      {/* Background Grid (same as Hero) */}
+      <MatrixRain />
+
+      {/* Background Grid */}
       <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(0,255,255,0.06)_1px,transparent_1px)] bg-[length:32px_32px] opacity-20"></div>
 
       {/* Glow Orbs */}
@@ -49,7 +49,7 @@ const Events = () => {
       {/* Section Heading */}
       <div className="relative z-10 text-center mb-16">
         <h2 className="text-4xl md:text-5xl font-extrabold tracking-wider text-white">
-          CYBER
+          CYBER{" "}
           <span className="bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
             EVENTS
           </span>
@@ -70,17 +70,19 @@ const Events = () => {
           events.map((event) => (
             <div
               key={event._id}
-              className="group relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl hover:scale-[1.05] transition-all duration-300"
+              className="group relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl hover:scale-[1.04] transition-all duration-300"
             >
               {/* Neon Border */}
               <div className="absolute inset-0 rounded-3xl border border-cyan-400/20 group-hover:border-purple-500/40 transition"></div>
 
-              {/* Image */}
-              <img
-                src={`https://enginerds-1gc2.onrender.com/${event.eventImage}`}
-                alt={event.name}
-                className="w-full h-48 object-cover opacity-80 group-hover:opacity-100 transition"
-              />
+              {/* ✅ FIXED IMAGE CONTAINER */}
+              <div className="w-full h-56 bg-black/60 flex items-center justify-center">
+                <img
+                  src={`https://enginerds-1gc2.onrender.com/${event.eventImage}`}
+                  alt={event.name}
+                  className="max-h-full max-w-full object-contain p-3"
+                />
+              </div>
 
               {/* Content */}
               <div className="p-6 relative z-10">
@@ -88,22 +90,13 @@ const Events = () => {
                   {event.name}
                 </h3>
 
-                <p className="text-gray-400 text-sm mb-4">
+                <p className="text-gray-400 text-sm mb-5 line-clamp-3">
                   {event.description}
                 </p>
 
-                {/* <div className="flex items-center justify-between mb-4">
-                  <span className="text-cyan-400 font-mono text-sm">
-                    ENTRY FEE
-                  </span>
-                  <span className="text-purple-400 font-bold">
-                    ₹ {event.price}
-                  </span>
-                </div> */}
-
                 <button
                   onClick={() => openModal(event._id)}
-                  className="hover:cursor-pointer w-full py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-semibold shadow-lg hover:scale-105 transition"
+                  className="hover:cursor-pointer w-full py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-semibold shadow-lg hover:scale-105 transition"
                 >
                   REGISTER
                 </button>
