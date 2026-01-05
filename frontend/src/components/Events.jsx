@@ -62,10 +62,41 @@ const Events = () => {
 
       {/* Events Grid */}
       <div className="relative z-10 max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+
+        {/* 🔥 TECHY EMPTY STATE */}
         {events.length === 0 ? (
-          <p className="col-span-full text-center text-gray-400 text-lg">
-            No events available yet.
-          </p>
+          <div className="col-span-full flex justify-center">
+            <div className="relative max-w-xl w-full p-8 rounded-2xl bg-black/60 border border-cyan-400/30 backdrop-blur-xl shadow-[0_0_30px_rgba(0,255,255,0.25)]">
+
+              {/* Scan Line */}
+              <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
+                <div className="absolute top-0 left-0 w-full h-[2px] bg-cyan-400 animate-pulse"></div>
+              </div>
+
+              {/* Terminal Header */}
+              <div className="flex items-center gap-2 mb-4">
+                <span className="w-3 h-3 bg-red-500 rounded-full"></span>
+                <span className="w-3 h-3 bg-yellow-400 rounded-full"></span>
+                <span className="w-3 h-3 bg-green-500 rounded-full"></span>
+                <span className="ml-3 text-sm font-mono text-cyan-400">
+                  system://events.scan
+                </span>
+              </div>
+
+              {/* Terminal Text */}
+              <p className="font-mono text-sm text-cyan-300 leading-relaxed">
+                <span className="text-purple-400">[INFO]</span> Scanning event database...
+                <br />
+                <span className="text-purple-400">[WARN]</span> No active events found
+                <br />
+                <span className="text-purple-400">[STATUS]</span> Awaiting deployment 🚀
+              </p>
+
+              <p className="mt-5 text-center text-gray-400 text-sm">
+                New cyber events will be deployed soon.
+              </p>
+            </div>
+          </div>
         ) : (
           events.map((event) => (
             <div
@@ -75,7 +106,7 @@ const Events = () => {
               {/* Neon Border */}
               <div className="absolute inset-0 rounded-3xl border border-cyan-400/20 group-hover:border-purple-500/40 transition"></div>
 
-              {/* ✅ FIXED IMAGE CONTAINER */}
+              {/* ✅ Image (Fully Visible) */}
               <div className="w-full h-56 bg-black/60 flex items-center justify-center">
                 <img
                   src={`https://enginerds-1gc2.onrender.com/${event.eventImage}`}
