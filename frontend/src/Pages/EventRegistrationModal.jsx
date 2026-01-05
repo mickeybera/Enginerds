@@ -177,8 +177,7 @@ const EventRegistrationModal = ({ isOpen, onClose, preSelectedEvent }) => {
 
                     <button
                       disabled={loading}
-                      className="hover:cursor-pointer w-full py-3 rounded-xl
-                                 bg-gradient-to-r from-cyan-500 to-purple-600
+                      className="hover:cursor-pointer rounded-md w-full py-3 border border-cyan-400/40 text-cyan-300 hover:bg-cyan-400/10
                                  text-white font-bold shadow-xl
                                  hover:scale-105 transition"
                     >

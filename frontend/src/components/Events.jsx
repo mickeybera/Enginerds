@@ -127,7 +127,7 @@ const Events = () => {
 
                 <button
                   onClick={() => openModal(event._id)}
-                  className="hover:cursor-pointer w-full py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-semibold shadow-lg hover:scale-105 transition"
+                  className="hover:cursor-pointer w-full py-2.5 rounded-xl border border-cyan-400/40 text-cyan-300 hover:bg-cyan-400/10 text-white font-semibold shadow-lg hover:scale-105 transition"
                 >
                   REGISTER
                 </button>
