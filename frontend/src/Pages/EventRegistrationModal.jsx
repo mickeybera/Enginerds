@@ -11,7 +11,7 @@ const EventRegistrationModal = ({ isOpen, onClose, preSelectedEvent }) => {
   const [selectedEventImage, setSelectedEventImage] = useState(null);
   const [selectedQRCode, setSelectedQRCode] = useState(null);
 
-  // const successSound = new Audio("/success.mp3");
+  const successSound = new Audio("/success.mp3");
 
   const [formData, setFormData] = useState({
     name: "",
